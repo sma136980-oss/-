@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحصول على مفتاح مجّاني – 5 ساعات</title>
+    <style>
+        :root {
+            --bg: #0b0f18;
+            --card: #111827;
+            --accent: #22d3ee;
+            --text: #e5e7eb;
+            --muted: #9ca3af;
+            --error: #ef4444;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: radial-gradient(1200px 600px at 80% -20%, #10203a22, transparent), var(--bg);
+            font-family: system-ui, -apple-system, Segoe UI, Roboto;
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .wrap {
+            max-width: 720px;
+            margin: 6vh auto;
+            padding: 16px;
+        }
+        
+        .card {
+            background: linear-gradient(135deg, #0f172a, #0b1220);
+            border: 1px solid #1f2937;
+            box-shadow: 0 20px 60px #0007;
+            border-radius: 24px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(34, 211, 238, 0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+        
+        h1 {
+            margin-top: 0;
+            font-size: 28px;
+            letter-spacing: 0.5px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .sub {
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #1f6feb, #22d3ee);
+            color: #021014;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 20px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s transform;
+            width: 100%;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn:disabled {
+            background: #374151;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--muted);
+            color: var(--text);
+            padding: 8px 16px;
+            font-size: 14px;
+            width: auto;
+            margin-top: 10px;
+        }
+        
+        .row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 16px;
+        }
+        
+        .inp {
+            flex: 1;
+            background: #0b1020;
+            border: 1px solid #1f2a44;
+            color: #cfe9ff;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-family: monospace;
+        }
+        
+        .copy {
+            background: #0ea5e9;
+            border: none;
+            color: #00121a;
+            padding: 12px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            min-width: 80px;
+        }
+        
+        .ad {
+            height: 120px;
+            border: 1px dashed #334155;
+            border-radius: 12px;
+            margin: 14px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7aa2c1;
+            background: rgba(15, 23, 42, 0.5);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                text-shadow: 0 0 5px rgba(34, 211, 238, 0.7);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(34, 211, 238, 0.9);
+            }
+            100% {
+                text-shadow: 0 0 5px rgba(34, 211, 238, 0.7);
+            }
+        }
+        
+        .countdown {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            display: none;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .success-check {
+            color: var(--success);
+            font-size: 20px;
+            display: none;
+        }
+        
+        .key-display {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #1f2937;
+        }
+        
+        .key-title {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .key-value {
+            font-family: monospace;
+            color: var(--accent);
+            font-size: 18px;
+            word-break: break-all;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+        
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 16px 0;
+            display: none;
+        }
+        
+        .admin-panel {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed #334155;
+            text-align: center;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .wrap {
+                padding: 10px;
+                margin: 3vh auto;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .row {
+                flex-direction: column;
+            }
+            
+            .copy {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="card">
+            <h1 class="pulse">احصل على مفتاح <span style="color:var(--accent)">لمدّة 5 ساعات</span></h1>
+            <div class="sub">انقر على الزر أدناه لإنشاء مفتاحك المجاني الذي سيكون صالحًا لمدة 5 ساعات</div>
+
+            <div id="errorMsg" class="error-message"></div>
+
+            <div id="gate" class="ad">
+                <div>جاهز! يمكنك الآن إنشاء المفتاح</div>
+            </div>
+
+            <button id="go" class="btn">
+                <span id="btn-text">إنشاء المفتاح الآن</span>
+                <span id="btn-loader" class="loader"></span>
+                <span id="btn-success" class="success-check">✓</span>
+            </button>
+
+            <div class="key-display" style="display: none;">
+                <div class="key-title">المفتاح الذي تم إنشاؤه:</div>
+                <div id="key-value" class="key-value"></div>
+            </div>
+
+            <div class="row">
+                <input id="key" class="inp" placeholder="المفتاح يظهر هنا" readonly />
+                <button id="copyKey" class="copy">نسخ</button>
+            </div>
+            
+            <div class="row">
+                <input id="url" class="inp" placeholder="الرابط (يعرض مع أحرف غريبة بعد /)" readonly />
+                <button id="open" class="copy">فتح</button>
+            </div>
+
+            <!-- زر التصفير المخفي - يتم إظهاره بتركيز معين -->
+            <div class="admin-panel">
+                <button id="resetData" class="btn-secondary">تصفير البيانات</button>
+            </div>
+
+            <div class="footer">
+                © 2023 جميع الحقوق محفوظة
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // منع فتح أدوات المطور
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode == 123) { // F12
+                e.preventDefault();
+                return false;
+            }
+            
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 73) { // Ctrl+Shift+I
+                e.preventDefault();
+                return false;
+            }
+            
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 74) { // Ctrl+Shift+J
+                e.preventDefault();
+                return false;
+            }
+            
+            if (e.ctrlKey && e.keyCode == 85) { // Ctrl+U
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        // منع النقر بزر الماوس الأيمن
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // إعداد المتغيرات
+        // تم إزالة التوكن من الكود لحماية الأمان
+        // يجب إضافة التوكن الصحيح هنا
+        const GITHUB_TOKEN = ""; // أضف التوكن الصحيح هنا
+        
+        const REPO_OWNER = "elsaedyn";
+        const REPO_NAME = "key";
+        const FILE_PATH = "key_free.txt";
+        
+        const goBtn = document.getElementById("go");
+        const keyInp = document.getElementById("key");
+        const urlInp = document.getElementById("url");
+        const copyKeyBtn = document.getElementById("copyKey");
+        const openBtn = document.getElementById("open");
+        const btnText = document.getElementById("btn-text");
+        const btnLoader = document.getElementById("btn-loader");
+        const btnSuccess = document.getElementById("btn-success");
+        const keyValue = document.getElementById("key-value");
+        const keyDisplay = document.querySelector(".key-display");
+        const errorMsg = document.getElementById("errorMsg");
+        const resetDataBtn = document.getElementById("resetData");
+        
+        // إخفاء زر التصفير في البداية
+        resetDataBtn.parentElement.style.display = 'none';
+        
+        // كود سري لإظهار زر التصفير (النقر 5 مرات على العنوان)
+        let clickCount = 0;
+        document.querySelector('h1').addEventListener('click', function() {
+            clickCount++;
+            if (clickCount >= 5) {
+                resetDataBtn.parentElement.style.display = 'block';
+                setTimeout(() => {
+                    resetDataBtn.parentElement.style.display = 'none';
+                    clickCount = 0;
+                }, 10000);
+            }
+        });
+        
+        // زر تصفير البيانات
+        resetDataBtn.addEventListener('click', function() {
+            if (confirm("هل أنت متأكد من أنك تريد تصفير جميع البيانات؟")) {
+                localStorage.removeItem("last_key_time");
+                alert("تم تصفير البيانات بنجاح!");
+            }
+        });
+        
+        // تشويش مستمر لمسار الصفحة
+        let noiseTimer = null;
+        
+        function startUrlNoise() {
+            function noise() {
+                const junkChars = "۞٪#~¿¤®¦¬£¢¡»«©§¶±‗░▒▓│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀ـ؋؉؈؇؆؅؄؃؁؀ٰۥۣۤۢ۠۟۞۝ۜۛۚۙۘۗۗۖە۔ۓۑېۏێۍیۋۊۉۈۇۆۅۄۃۂہەؠ؆؅؄؃؂؁ࣰࣱࣲࣺࣹࣶ࣯࣮࣭ࣩࣦࣣࣿࣾࣽࣸࣷࣵࣴࣳ࣬࣫࣪ࣨࣧࣥࣤ࣢࣓࣒࣑࣐࣏࣡࣠ࣟࣞࣝࣜࣛࣚࣙࣘࣗࣖࣕࣔ࣎࣍࣌࣋࣊ࣉࣈࣇࣆࣅࣄࣃࣂࣁࣀ";
+                
+                let junk = "";
+                
+                for (let i = 0; i < 12; i++) {
+                    junk += junkChars[Math.floor(Math.random() * junkChars.length)];
+                }
+                
+                junk += "_" + Date.now();
+                
+                history.replaceState({}, "", "/" + junk);
+            }
+            
+            noise();
+            noiseTimer = setInterval(noise, 100);
+        }
+        
+        startUrlNoise();
+        
+        // توليد مفتاح عشوائي
+        function generateRandomKey() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            
+            let result = '';
+            
+            for (let i = 0; i < 7; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            return result;
+        }
+        
+        // عرض رسالة خطأ
+        function showError(message) {
+            errorMsg.textContent = message;
+            errorMsg.style.display = "block";
+            
+            // إخفاء الرسالة بعد 10 ثوان
+            setTimeout(() => {
+                errorMsg.style.display = "none";
+            }, 10000);
+        }
+        
+        // توليد المفتاح ورفعه إلى GitHub
+        goBtn.addEventListener("click", async () => {
+            // التحقق من وجود token
+            if (!GITHUB_TOKEN) {
+                showError("عذراً، لم يتم تعيين توكن GitHub. يرجى إضافة توكن صحيح.");
+                return;
+            }
+            
+            goBtn.disabled = true;
+            btnText.textContent = "جارٍ الإنشاء والرفع…";
+            btnLoader.style.display = "inline-block";
+            errorMsg.style.display = "none";
+            
+            try {
+                // توليد المفتاح
+                const randomPart = generateRandomKey();
+                const newKey = `albob_golem_${randomPart}_5h`;
+                
+                // محاولة جلب المفاتيح الحالية من GitHub
+                let currentKeys = "";
+                let currentSha = null;
+                
+                try {
+                    const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                        headers: {
+                            'Authorization': `token ${GITHUB_TOKEN}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        currentSha = data.sha;
+                        // إصلاح فك الترميز Base64
+                        try {
+                            currentKeys = atob(data.content);
+                        } catch (e) {
+                            // إذا فشل atob العادي، نجرب إزالة المسافات أولاً
+                            currentKeys = atob(data.content.replace(/\s/g, ''));
+                        }
+                    } else if (response.status === 404) {
+                        // الملف غير موجود، سيتم إنشاؤه
+                        console.log("الملف غير موجود، سيتم إنشاؤه");
+                    } else {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || `فشل في جلب الملف: ${response.status}`);
+                    }
+                } catch (e) {
+                    console.error("خطأ في جلب الملف:", e);
+                    throw new Error("لا يمكن الوصول إلى مستودع GitHub. تحقق من التوكن والصلااحيات.");
+                }
+
+                // إضافة المفتاح الجديد
+                let updatedKeys = currentKeys ? currentKeys.replace(/\r\n/g, '\n').replace(/\n+$/g, '') : '';
+                if (updatedKeys.length > 0) {
+                    updatedKeys += "\n" + newKey;
+                } else {
+                    updatedKeys = newKey;
+                }
+
+                // إصلاح ترميز المحتوى للـ Base64
+                const contentBase64 = btoa(unescape(encodeURIComponent(updatedKeys)));
+                
+                // رفع المفاتيح المحدثة إلى GitHub
+                const uploadResponse = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
+                    body: JSON.stringify({
+                        message: 'إضافة مفتاح جديد',
+                        content: contentBase64,
+                        sha: currentSha || undefined
+                    })
+                });
+                
+                if (!uploadResponse.ok) {
+                    const errorData = await uploadResponse.json();
+                    console.error("تفاصيل الخطأ:", errorData);
+                    
+                    if (errorData.message && errorData.message.includes("bad credentials")) {
+                        throw new Error("التوكن غير صالح أو منتهي الصلاحية");
+                    } else if (errorData.message && errorData.message.includes("Not Found")) {
+                        throw new Error("المستودع أو الملف غير موجود");
+                    } else {
+                        throw new Error(errorData.message || "فشل في رفع الملف إلى GitHub");
+                    }
+                }
+                
+                // عرض النتائج للمستخدم
+                keyInp.value = newKey;
+                keyValue.textContent = newKey;
+                keyDisplay.style.display = "block";
+                
+                const displayUrl = `${window.location.origin}/${Math.random().toString(36).substring(2, 10)}_${randomPart}_${Date.now().toString(36)}`;
+                urlInp.value = displayUrl;
+                
+                btnLoader.style.display = "none";
+                btnSuccess.style.display = "inline-block";
+                btnText.textContent = "تم الإنشاء والرفع بنجاح!";
+                
+            } 
+            catch (e) {
+                console.error("Error:", e);
+                
+                let errorMessage = "عذراً، حدث خطأ أثناء إنشاء المفتاح. ";
+                
+                if (e.message.includes("401") || e.message.includes("Bad credentials") || e.message.includes("التوكن غير صالح")) {
+                    errorMessage = "التوكن غير صالح أو منتهي الصلاحية. يرجى استخدام توكن جديد.";
+                } else if (e.message.includes("403")) {
+                    errorMessage = "ليس لديك صلاحية للوصول إلى هذا المستودع.";
+                } else if (e.message.includes("404") || e.message.includes("غير موجود")) {
+                    errorMessage = "المستودع أو الملف غير موجود. تحقق من الإعدادات.";
+                } else {
+                    errorMessage += e.message || "يرجى المحاولة مرة أخرى.";
+                }
+                
+                showError(errorMessage);
+                
+                btnText.textContent = "حاول مجددًا";
+                btnLoader.style.display = "none";
+                goBtn.disabled = false;
+            }
+        });
+        
+        copyKeyBtn.addEventListener("click", async () => {
+            if (!keyInp.value) return;
+            
+            try { 
+                await navigator.clipboard.writeText(keyInp.value); 
+                copyKeyBtn.textContent = "نُسخ!"; 
+                setTimeout(() => copyKeyBtn.textContent = "نسخ", 1200);
+            } 
+            catch {
+                // Fallback for older browsers
+                keyInp.select();
+                document.execCommand('copy');
+                copyKeyBtn.textContent = "نُسخ!";
+                setTimeout(() => copyKeyBtn.textContent = "نسخ", 1200);
+            }
+        });
+        
+        openBtn.addEventListener("click", () => {
+            if (!urlInp.value) return;
+            window.open(urlInp.value, "_blank", "noopener,noreferrer");
+        });
+    </script>
+</body>
+</html>
